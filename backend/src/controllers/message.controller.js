@@ -18,12 +18,12 @@ export const getAllContacts = async (req, res) => {
 export const getMessagesByUserId = async (req, res) => {
     try {
         const myId= req.user._id;
-        const {id:userToChatId} = req.prams
+        const {id:userToChatId} = req.params
 
         const messages = await Message.find ({
             $or: [
-                {senderId:myId, recieverId:userToChatId},
-                {senderId:userToChatId, recieverId:myId}
+                {senderId:myId, receiverId:userToChatId},
+                {senderId:userToChatId, receiverId:myId}
             ]
         });
         res.status(200).json(messages)
@@ -84,7 +84,7 @@ export const getChatPartners= async (req,res) => {
             ...new Set(
                 messages.map(msg => 
                 msg.senderId.toString() === loggedInUserId.toString() 
-                ? recieverId.toString() : senderId.toString())
+                ? receiverId.toString() : senderId.toString())
             ),
         ];
 
